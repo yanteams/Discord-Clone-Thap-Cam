@@ -1,7 +1,7 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-
+import qs from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 const formSchema = z.object({
   name: z
@@ -47,6 +47,7 @@ const formSchema = z.object({
 export const CreateChannelModal = () => {
   const { isOpen, onClose, type } = useModal();
   const router = useRouter();
+  const params = useParams();
   const isModalOpen = isOpen && type === "createChannel";
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -59,7 +60,13 @@ export const CreateChannelModal = () => {
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      const url = qs.stringifyUrl({
+        url: "/api/channels",
+        query: {
+          serverId: params?.serverId,
+        },
+      });
+      await axios.post(url, values);
       form.reset();
       router.refresh();
       onClose();
