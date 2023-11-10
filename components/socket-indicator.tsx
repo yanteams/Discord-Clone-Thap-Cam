@@ -11,13 +11,11 @@ export const SocketIndicator = () => {
         Fallback : Polling every 1s
       </Badge>
     );
-    return (
-      <Badge
-        variant="outline"
-        className="bg-emerald-600 text-white border-none"
-      >
-        Live: Real-time update
-      </Badge>
-    );
   }
+
+  return (
+    <Badge variant="outline" className="bg-emerald-600 text-white border-none">
+      Live: Real-time update
+    </Badge>
+  );
 };

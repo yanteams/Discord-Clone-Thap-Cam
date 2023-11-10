@@ -25,7 +25,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       process.env.NEXT_PUBLIC_SITE_URL!,
       {
         path: "/api/socket/io",
-      addTrailingSlash: false,
+        addTrailingSlash: false,
       }
     );
     socketInstance.on("connect", () => {
@@ -39,5 +39,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       socketInstance.disconnect();
     };
   }, []);
-  return <SocketContext.Provider value={{ socket, isConnected }} />;
+  return (
+    <SocketContext.Provider value={{ socket, isConnected }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
